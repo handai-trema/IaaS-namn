@@ -1,0 +1,48 @@
+<html>
+<head>
+  <title>NETWORK SLICE GRAPH DEMO by handm group</title>
+  <script src="./vis.js"></script>
+  <link href="./vis.css" rel="stylesheet" type="text/css" />
+  <style type="text/css">
+   #mynetwork {
+    width: 800px;
+    height: 600px;
+    border: 1px solid lightgray;
+    background-color: #dddddd;
+   }
+  </style>
+</head>
+<body>
+<div id="mynetwork"></div>
+<script type="text/javascript">
+var exax = - mynetwork.clientWidth / 2 -100;
+var exay = - mynetwork.clientHeight / 2 + 50;
+var opts={};
+var hostcount=0;
+var nodes = [{"id":100,"label":"NETWORK",x:0,y:0,"image":"./cloud.png","shape":"image"}];
+var edges =[];
+/*
+for(i=0;i<21;i++){
+	addHost(i+":"+i+":",i);
+	addSliceExample(i,"Slice"+i);
+}
+ここで追加
+*/
+
+function addHost(hostmac,sliceid){	//Macアドレスと、Sliceの番号を与えられる。Sliceは事前処理されている。
+	nodes.push({id:hostcount,label:hostmac,image:"./slice"+sliceid%21+".png",shape:"image"});
+	edges.push({from:hostcount,to:100});
+	hostcount+=1;
+}
+
+function addSliceExample(sliceid,slicename){
+	nodes.push({id: 1000+sliceid,x:exax+100*Math.floor(sliceid/10),y:exay+80*(sliceid%10), label:slicename, group: 'internet',image:"./slice"+sliceid%21+".png",shape:"image",value: 1, fixed: true, physics:false});
+}
+
+var container = document.getElementById('mynetwork');
+var data = {'nodes': nodes, 'edges': edges};
+var gph = new vis.Network(container, data, opts);
+
+</script>
+</body>
+</html>

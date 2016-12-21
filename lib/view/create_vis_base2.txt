@@ -1,0 +1,18 @@
+function addHost(hostmac,sliceid){	//Macアドレスと、Sliceの番号を与えられる。Sliceは事前処理されている。
+	nodes.push({id:hostcount,label:hostmac,image:"./slice"+sliceid%21+".png",shape:"image"});
+	edges.push({from:hostcount,to:100});
+	hostcount+=1;
+}
+
+function addSliceExample(sliceid,slicename){
+	nodes.push({id: 1000+sliceid,x:exax+100*Math.floor(sliceid/10),y:exay+80*(sliceid%10), label:slicename, group: 'internet',image:"./slice"+sliceid%21+".png",shape:"image",value: 1, fixed: true, physics:false});
+}
+
+var container = document.getElementById('mynetwork');
+var data = {'nodes': nodes, 'edges': edges};
+var gph = new vis.Network(container, data, opts);
+
+setTimeout("location.reload()",1000*5);
+</script>
+</body>
+</html>
