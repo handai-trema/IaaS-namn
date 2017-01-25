@@ -68,12 +68,9 @@ class RoutingSwitch < Trema::Controller
   end
 
   def packet_in_arp_request(dpid, in_port, packet_in)
-      puts "arp_request"
-      #Arpリクエスト元の情報をarpテーブルに登録
       @arp_table.update(in_port,
                         packet_in.sender_protocol_address,
                         packet_in.source_mac)
-      #宛先ホストのmacアドレスをarpテーブルから探す
       if @arp_table.lookup(packet_in.target_protocol_address)
         dest_host_mac_address = @arp_table.lookup(packet_in.target_protocol_address).mac_address
         send_packet_out(
