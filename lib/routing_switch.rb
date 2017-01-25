@@ -233,4 +233,3 @@ class RoutingSwitch < Trema::Controller
   end
 end
 # rubocop:enable ClassLength
-end
