@@ -47,7 +47,7 @@ class RoutingSwitch < Trema::Controller
     #puts packet_in.data
     case packet_in.data
     when Arp::Request
-      packet_in_arp_request dpid, packet_in.in_port, packet_in.data
+      packet_in_arp_request dpid, packet_in
     when Arp::Reply
       packet_in_arp_reply dpid, packet_in
     end
@@ -67,8 +67,8 @@ class RoutingSwitch < Trema::Controller
     TopologyController.new { |topo| topo.add_observer @path_manager }.start
   end
 
-  def packet_in_arp_request(dpid, in_port, packet_in)
-      @arp_table.update(in_port,
+  def packet_in_arp_request(dpid, packet_in)
+      @arp_table.update(packet_in.in_port,
                         packet_in.sender_protocol_address,
                         packet_in.source_mac)
 #      if @arp_table.lookup(packet_in.target_protocol_address)
@@ -108,6 +108,6 @@ class RoutingSwitch < Trema::Controller
 #        end
 #      end
 
-      @topology.flood_packets(packet_in.data)
+      @topology.flood_packets(packet_in)
     end
   end

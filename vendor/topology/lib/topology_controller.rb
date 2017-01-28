@@ -84,9 +84,10 @@ class TopologyController < Trema::Controller
         send_packet_out(
                                 dpid,
                                 raw_data: packet_in,
-                                actions: SendOutPort.new(port))
+                                actions: SendOutPort.new(port.number))
       end
     end
+  end
   private
 
   def send_lldp(dpid, ports)
