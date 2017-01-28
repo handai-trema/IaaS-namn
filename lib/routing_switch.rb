@@ -82,27 +82,32 @@ class RoutingSwitch < Trema::Controller
 #                                                 ).to_binary,
 #                        actions: SendOutPort.new(in_port))
 #      end
-      @topology.topology.ports.each do |dpid, ports|
-        ports.each do |port|
-          send_packet_out(
-                                  dpid,
-                                  raw_data: packet_in,
-                                  actions: SendOutPort.new(port))
-        end
-      end
+
+#      @topology.topology.ports.each do |dpid, ports|
+#        ports.each do |port|
+#          send_packet_out(
+#                                  dpid,
+#                                  raw_data: packet_in,
+#                                  actions: SendOutPort.new(port))
+#        end
+#      end
+
+      @topology.flood_packets(packet_in)
     end
 
     def packet_in_arp_reply(dpid, packet_in)
       @arp_table.update(packet_in.in_port,
                         packet_in.sender_protocol_address,
                         packet_in.source_mac)
-      @topology.topology.ports.each do |dpid, ports|
-        ports.each do |port|
-          send_packet_out(
-                                  dpid,
-                                  raw_data: packet_in.data,
-                                  actions: SendOutPort.new(port))
-        end
-      end
+#      @topology.topology.ports.each do |dpid, ports|
+#        ports.each do |port|
+#          send_packet_out(
+#                                  dpid,
+#                                  raw_data: packet_in.data,
+#                                  actions: SendOutPort.new(port))
+#        end
+#      end
+
+      @topology.flood_packets(packet_in.data)
     end
   end
