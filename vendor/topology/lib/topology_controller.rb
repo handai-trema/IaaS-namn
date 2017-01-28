@@ -78,6 +78,15 @@ class TopologyController < Trema::Controller
     end
   end
 
+  def flood_packets(packet_in)
+    @topology.ports.each do |dpid, ports|
+      ports.each do |port|
+        send_packet_out(
+                                dpid,
+                                raw_data: packet_in,
+                                actions: SendOutPort.new(port))
+      end
+    end
   private
 
   def send_lldp(dpid, ports)
