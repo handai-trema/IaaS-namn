@@ -48,8 +48,10 @@ class RoutingSwitch < Trema::Controller
     @topology.packet_in(dpid, packet_in)
     case packet_in.data
     when Arp::Request
+      p packet_in.source_mac
       packet_in_arp_request dpid, packet_in
     when Arp::Reply
+      p packet_in.source_mac
       packet_in_arp_reply dpid, packet_in
     else
       @path_manager.packet_in(dpid, packet_in) unless packet_in.lldp?
@@ -69,46 +71,10 @@ class RoutingSwitch < Trema::Controller
   end
 
   def packet_in_arp_request(dpid, packet_in)
-#      @arp_table.update(packet_in.in_port,
-#                        packet_in.sender_protocol_address,
-#                        packet_in.source_mac)
-#      if @arp_table.lookup(packet_in.target_protocol_address)
-#        dest_host_mac_address = @arp_table.lookup(packet_in.target_protocol_address).mac_address
-#        send_packet_out(
-#                        dpid,
-#                        raw_data: Arp::Reply.new(destination_mac: packet_in.source_mac,
-#                                                 source_mac: dest_host_mac_address,
-#                                                 sender_protocol_address: packet_in.target_protocol_address,
-#                                                 target_protocol_address: packet_in.sender_protocol_address
-#                                                 ).to_binary,
-#                        actions: SendOutPort.new(in_port))
-#      end
-
-#      @topology.topology.ports.each do |dpid, ports|
-#        ports.each do |port|
-#          send_packet_out(
-#                                  dpid,
-#                                  raw_data: packet_in,
-#                                  actions: SendOutPort.new(port))
-#        end
-#      end
-
-      @topology.flood_packets(packet_in)
-    end
-
-    def packet_in_arp_reply(dpid, packet_in)
-#      @arp_table.update(packet_in.in_port,
-#                        packet_in.sender_protocol_address,
-#                        packet_in.source_mac)
-#      @topology.topology.ports.each do |dpid, ports|
-#        ports.each do |port|
-#          send_packet_out(
-#                                  dpid,
-#                                  raw_data: packet_in.data,
-#                                  actions: SendOutPort.new(port))
-#        end
-#      end
-
-      @topology.flood_packets(packet_in)
-    end
+    @topology.flood_packets(packet_in)
   end
+
+  def packet_in_arp_reply(dpid, packet_in)
+    @topology.flood_packets(packet_in)
+  end
+end
