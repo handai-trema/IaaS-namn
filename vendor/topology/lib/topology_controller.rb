@@ -50,13 +50,17 @@ class TopologyController < Trema::Controller
   end
 
   def packet_in(dpid, packet_in)
-    if packet_in.lldp?
-      @topology.maybe_add_link Link.new(dpid, packet_in)
-    elsif packet_in.data.is_a? Arp
+    case packet_in.data
+    when Arp::Request
+    when Arp::Reply
+      p packet_in.source_mac
       @topology.maybe_add_host(packet_in.source_mac,
                                packet_in.source_ip_address,
                                dpid,
                                packet_in.in_port)
+    if packet_in.lldp?
+      @topology.maybe_add_link Link.new(dpid, packet_in)
+    #elsif packet_in.data.is_a? Arp
     elsif packet_in.data.is_a? Parser::IPv4Packet
       if packet_in.source_ip_address.to_s != "0.0.0.0"
         @topology.maybe_add_host(packet_in.source_mac,
