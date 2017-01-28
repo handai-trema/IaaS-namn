@@ -68,9 +68,9 @@ class RoutingSwitch < Trema::Controller
   end
 
   def packet_in_arp_request(dpid, packet_in)
-      @arp_table.update(packet_in.in_port,
-                        packet_in.sender_protocol_address,
-                        packet_in.source_mac)
+#      @arp_table.update(packet_in.in_port,
+#                        packet_in.sender_protocol_address,
+#                        packet_in.source_mac)
 #      if @arp_table.lookup(packet_in.target_protocol_address)
 #        dest_host_mac_address = @arp_table.lookup(packet_in.target_protocol_address).mac_address
 #        send_packet_out(
@@ -96,9 +96,9 @@ class RoutingSwitch < Trema::Controller
     end
 
     def packet_in_arp_reply(dpid, packet_in)
-      @arp_table.update(packet_in.in_port,
-                        packet_in.sender_protocol_address,
-                        packet_in.source_mac)
+#      @arp_table.update(packet_in.in_port,
+#                        packet_in.sender_protocol_address,
+#                        packet_in.source_mac)
 #      @topology.topology.ports.each do |dpid, ports|
 #        ports.each do |port|
 #          send_packet_out(
