@@ -83,7 +83,7 @@ class TopologyController < Trema::Controller
       ports.each do |port|
         send_packet_out(
                                 dpid,
-                                raw_data: packet_in,
+                                raw_data: packet_in.data.to_binary,
                                 actions: SendOutPort.new(port.number))
       end
     end
