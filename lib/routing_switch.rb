@@ -71,16 +71,24 @@ class RoutingSwitch < Trema::Controller
       @arp_table.update(in_port,
                         packet_in.sender_protocol_address,
                         packet_in.source_mac)
-      if @arp_table.lookup(packet_in.target_protocol_address)
-        dest_host_mac_address = @arp_table.lookup(packet_in.target_protocol_address).mac_address
-        send_packet_out(
-                        dpid,
-                        raw_data: Arp::Reply.new(destination_mac: packet_in.source_mac,
-                                                 source_mac: dest_host_mac_address,
-                                                 sender_protocol_address: packet_in.target_protocol_address,
-                                                 target_protocol_address: packet_in.sender_protocol_address
-                                                 ).to_binary,
-                        actions: SendOutPort.new(in_port))
+#      if @arp_table.lookup(packet_in.target_protocol_address)
+#        dest_host_mac_address = @arp_table.lookup(packet_in.target_protocol_address).mac_address
+#        send_packet_out(
+#                        dpid,
+#                        raw_data: Arp::Reply.new(destination_mac: packet_in.source_mac,
+#                                                 source_mac: dest_host_mac_address,
+#                                                 sender_protocol_address: packet_in.target_protocol_address,
+#                                                 target_protocol_address: packet_in.sender_protocol_address
+#                                                 ).to_binary,
+#                        actions: SendOutPort.new(in_port))
+#      end
+      @topology.topology.ports.each do |dpid, ports|
+        ports.each do |port|
+          send_packet_out(
+                                  dpid,
+                                  raw_data: packet_in,
+                                  actions: SendOutPort.new(port))
+        end
       end
     end
 
@@ -88,5 +96,13 @@ class RoutingSwitch < Trema::Controller
       @arp_table.update(packet_in.in_port,
                         packet_in.sender_protocol_address,
                         packet_in.source_mac)
+      @topology.topology.ports.each do |dpid, ports|
+        ports.each do |port|
+          send_packet_out(
+                                  dpid,
+                                  raw_data: packet_in.data,
+                                  actions: SendOutPort.new(port))
+        end
+      end
     end
   end
