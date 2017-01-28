@@ -13,7 +13,6 @@ class PathManager < Trema::Controller
   def packet_in(_dpid, packet_in)
     path = maybe_create_shortest_path(packet_in)
     ports = path ? [path.out_port] : @graph.external_ports
-    p @graph
     ports.each do |each|
       send_packet_out(each.dpid,
                       raw_data: packet_in.raw_data,
