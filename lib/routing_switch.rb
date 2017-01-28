@@ -46,13 +46,12 @@ class RoutingSwitch < Trema::Controller
     #puts packet_in.in_port
     #puts packet_in.data
     @topology.packet_in(dpid, packet_in)
+    @path_manager.packet_in(dpid, packet_in) unless packet_in.lldp?
     case packet_in.data
     when Arp::Request
       packet_in_arp_request dpid, packet_in
     when Arp::Reply
       packet_in_arp_reply dpid, packet_in
-    else
-      @path_manager.packet_in(dpid, packet_in) unless packet_in.lldp?
     end
   end
 

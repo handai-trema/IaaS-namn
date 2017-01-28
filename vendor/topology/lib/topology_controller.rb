@@ -52,11 +52,13 @@ class TopologyController < Trema::Controller
   def packet_in(dpid, packet_in)
     case packet_in.data
     when Arp::Request
+      p packet_in.sender_protocol_address
       @topology.maybe_add_host(packet_in.source_mac,
                                packet_in.sender_protocol_address,
                                dpid,
                                packet_in.in_port)
     when Arp::Reply
+      p packet_in.sender_protocol_address
       @topology.maybe_add_host(packet_in.source_mac,
                                packet_in.sender_protocol_address,
                                dpid,
