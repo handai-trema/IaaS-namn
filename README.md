@@ -6,7 +6,11 @@
 - Controller用PC(Cont)
 -- VM Ubuntu, trema実行環境，2 ethernet card(192.168.1.4(Controller), 192.168.0.10)
 - Server用PC(Serv)
--- Native Ubuntu(192.168.0.254), docker, docker images(zabbix, php:5.6-apache)
+-- Native Ubuntu(192.168.0.254)
+-- need to install
+--- docker
+--- docker images(zabbix, php:5.6-apache)
+--- node.js environment
 - UserPC(User)
 -- Any OS(192.168.0.x, 30<x<100)
 
