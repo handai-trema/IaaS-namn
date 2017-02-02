@@ -14,7 +14,8 @@ NAME="hogeN"
 IP="192.168.0.N"
 FILE=`cat ./Idx`
 Idx=`expr $FILE + 1`
-docker run -id --name ${NAME/N/$Idx} --net=shared_nw --ip=${IP/N/$Idx} -p 80 hoge:php > /dev/null
+#docker run -id --name ${NAME/N/$Idx} --net=shared_nw --ip=${IP/N/$Idx} -p 80 hoge:php > /dev/null
+docker run -id --name ${NAME/N/$Idx} --net=shared_nw --ip=${IP/N/$Idx} -p 80 php:5.6-apache > /dev/null
 CMD="docker exec ${NAME/N/$Idx} bash -c 'echo $CREATOR > usrIP.txt'"
 eval ${CMD} > /dev/null
 echo "Created:"
