@@ -1,0 +1,18 @@
+if test $# -eq 0 ; then
+  echo "delete id:"
+  read NUM
+else
+  NUM=$1
+fi
+NAME="hogeN"
+IP="192.168.0.N"
+FILE=`cat ./Idx`
+NUM=`expr $FILE - $NUM`
+for i in `seq 0 $NUM`
+do
+  Idx=`expr $FILE - $i`
+  docker stop ${NAME/N/$Idx} > /dev/null
+  docker rm ${NAME/N/$Idx} > /dev/null
+  echo "container ${IP/N/$Idx} deleted."
+  echo `expr $Idx - 1` > ./Idx
+done

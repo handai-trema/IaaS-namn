@@ -1,0 +1,21 @@
+コントローラを外に繋げなくてはいけない?
+コードは誰のものを使う?
+
+サーバ: Docker を使ってVMを作る
+ユーザ: CLI or WebインターフェースでVMを作る，
+コントローラ: スライスを作る．ユーザとサーバの接続
+
+スライス: ユーザとサーバで立ち上げたVM群
+
+Docker 関連のAPI作成が面倒くさそう
+Docker サーバは全てのVLANに属しないとダメそう(VLAN2つくらい)
+
+役割 
+	Docker API の作成
+	Docker server
+	webインターフェースの整理
+	コントローラとユーザ，サーバの通信
+	
+来週までのTo Do
+	Docker を loacl 環境で弄ってみる
+	http://paiza.hatenablog.com/entry/docker_intro

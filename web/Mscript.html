@@ -1,0 +1,36 @@
+<html>
+  <head>
+    <title>team-namn演習用API</title>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+  </head>
+
+  <body>
+    test
+    <script>
+      var wsh = new ActiveXObject("WScript.Shell");
+      function withExecCommand(cmd, func) {
+        var exec = wsh.exec(cmd);
+        while (!exec.StdOut.AtEndOfStream) {
+          func(exec.StdOut.ReadLine());
+        }
+        return exec.ExitCode;
+      }
+
+      function getExecCommandResult(cmd) {
+        var result = "";
+        withExecCommand(
+          cmd,
+          function (line) {
+            result += line + "\r\n";
+          }
+        );
+        return result;
+      }
+
+      var str = "test2"
+      document.write("<br>" + str);
+      document.write("<br>" + getExecCommandResult("ls"));     
+      
+    </script>
+  </body>
+</html>

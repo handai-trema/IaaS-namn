@@ -1,0 +1,22 @@
+TIME=`cat ./Time`
+NOW=`date "+%Y%m%d%H%M%S"`
+if test `expr $NOW - $TIME` -lt 15 ; then
+  #echo "Create frequently"
+  exit
+fi
+echo $NOW > ./Time
+if test $# -eq 0 ; then
+  CREATOR="0.0.0.0"
+else
+  CREATOR=$1
+fi
+NAME="hogeN"
+IP="192.168.0.N"
+FILE=`cat ./Idx`
+Idx=`expr $FILE + 1`
+docker run -id --name ${NAME/N/$Idx} --net=shared_nw --ip=${IP/N/$Idx} -p 80 hoge:php > /dev/null
+CMD="docker exec ${NAME/N/$Idx} bash -c 'echo $CREATOR > usrIP.txt'"
+eval ${CMD} > /dev/null
+echo "Created:"
+echo ${IP/N/$Idx}
+echo $Idx > ./Idx
