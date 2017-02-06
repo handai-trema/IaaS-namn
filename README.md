@@ -16,23 +16,25 @@
 
 起動手順
 -------
-1. trema実行(Cont)
+* 1. trema実行(Cont)
 ```
 $ ./bin/trema run ./lib/routing_switch.rb -- --slicing
 ```
 
-2. ネットワークブリッジセットアップ(Serv)
+* 2. ネットワークブリッジセットアップ(Serv)
 ```
 $ ./docker/network_setup.sh
 ```
 
-3. コンテナ作成用node.js起動(Serv)
+* 3. コンテナ作成用node.js起動(Serv)
 ```
 $ node ./web/index.js
 ```
 
-4. zabbix起動(Serv)
-それぞれ別のターミナルで，
+* 4. zabbix起動(Serv)
+
+それぞれ別のターミナルで，以下のスクリプトを順に実行．
+ただし，それぞれの起動には時間がかかるため，前のものが起動できたことを確認してから実行すること．
 ```
 $ ./web/zabbix/1_startDB.sh
 ```
@@ -42,9 +44,9 @@ $ ./web/zabbix/2_startZabbix.sh
 ```
 $ ./web/zabbix/3_startMonitoring.sh
 ```
-お好みで起動したzabbix上(web)で./web/zabbix内のxmlを適用してください
+お好みで起動したブラウザで，zabbixにログイン（デフォルトでIDはadmin，passはzabbix）した後，設定タブのテンプレートのインポートで./web/zabbix内のxmlをインポートしてください．その後は設定タブのホスト作成でdockerコンテナ監視用のホストを作り，先ほどインストールしたテンプレートを適用してください．
 
-5. ブラウザ上からServにアクセス(User)
+* 5. ブラウザ上からServにアクセス(User)
 ブラウザから，
 ```
 192.168.0.254:8124
@@ -52,3 +54,6 @@ $ ./web/zabbix/3_startMonitoring.sh
 へアクセス．  
 作成されたコンテナのipアドレスが返ってくるので，
 ブラウザ上からアクセス可能となっている．
+
+* 6. サービスの享受
+Servへのアクセスにより返ってきたipアドレスをブラウザに入力するとコンテナ上のwebサーバにアクセスして，サービスが享受できるようになっている．
